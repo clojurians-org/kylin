@@ -194,7 +194,7 @@ public class KylinTestBase {
             sb.append(resultTable.getTableMetaData().getColumns()[i].getColumnName());
             sb.append("-");
             sb.append(resultTable.getTableMetaData().getColumns()[i].getDataType());
-            sb.append("\t");
+            sb.append(",");
             columns[i] = resultTable.getTableMetaData().getColumns()[i].getColumnName();
         }
         sb.append("\n");
@@ -202,7 +202,8 @@ public class KylinTestBase {
         for (int i = 0; i < resultTable.getRowCount(); i++) {
             for (int j = 0; j < columns.length; j++) {
                 sb.append(resultTable.getValue(i, columns[j]));
-                sb.append("\t");
+                if (j < columns.length - 1)
+                    sb.append(",");
             }
             sb.append("\n");
         }
@@ -586,7 +587,7 @@ public class KylinTestBase {
         //setup cube conn
         File olapTmp = OLAPSchemaFactory.createTempOLAPJson(ProjectInstance.DEFAULT_PROJECT_NAME, config);
         Properties props = new Properties();
-        props.setProperty(OLAPQuery.PROP_SCAN_THRESHOLD, "10001");
+        props.setProperty(OLAPQuery.PROP_SCAN_THRESHOLD, "20001");
         cubeConnection = DriverManager.getConnection("jdbc:calcite:model=" + olapTmp.getAbsolutePath(), props);
 
         //setup h2
